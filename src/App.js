@@ -1,23 +1,43 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from "react";
+import LoginForm from "./components/LoginForm";
+import TrainTicketForm from "./components/TrainTicketForm";
+import TrainTicketCheckout from "./components/TrainTicketCheckout";
 
 function App() {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [selectedTicket, setSelectedTicket] = useState(null);
+
+  const handleLogin = (username, password) => {
+    // Perform login validation here
+    // Set the isLoggedIn state to true if login is successful
+    setIsLoggedIn(true);
+  };
+
+  const handleTicketSelection = (ticket) => {
+    setSelectedTicket(ticket);
+  };
+
+  const handleCheckout = (farePaymentCode) => {
+    // Perform checkout process here
+    // Show success message if checkout is successful
+    alert("Checkout successful!");
+    // Reset selected ticket and isLoggedIn state
+    setSelectedTicket(null);
+    setIsLoggedIn(false);
+  };
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      {!isLoggedIn ? (
+        <LoginForm onLogin={handleLogin} />
+      ) : selectedTicket ? (
+        <TrainTicketCheckout
+          ticket={selectedTicket}
+          onCheckout={handleCheckout}
+        />
+      ) : (
+        <TrainTicketForm onSelectTicket={handleTicketSelection} />
+      )}
     </div>
   );
 }
